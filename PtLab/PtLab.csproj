@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+	<UseWindowsForms>True</UseWindowsForms>
+	<ApplicationIcon>Resource\pills.ico</ApplicationIcon>
+	<StartupObject>PtLab.App</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resource\Icons\csharp.png" />
+    <None Remove="Resource\Icons\default.png" />
+    <None Remove="Resource\Icons\DE_flag.png" />
+    <None Remove="Resource\Icons\doc.png" />
+    <None Remove="Resource\Icons\folder.png" />
+    <None Remove="Resource\Icons\image.png" />
+    <None Remove="Resource\Icons\pdf.png" />
+    <None Remove="Resource\Icons\PL_flag.png" />
+    <None Remove="Resource\Icons\txt.png" />
+    <None Remove="Resource\Icons\UK_flag.png" />
+    <None Remove="Resource\Icons\xaml.png" />
+    <None Remove="Resource\image.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resource\pills.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resource\Icons\csharp.png" />
+    <Resource Include="Resource\Icons\default.png" />
+    <Resource Include="Resource\Icons\DE_flag.png" />
+    <Resource Include="Resource\Icons\folder.png" />
+    <Resource Include="Resource\Icons\image.png" />
+    <Resource Include="Resource\Icons\pdf.png" />
+    <Resource Include="Resource\Icons\PL_flag.png" />
+    <Resource Include="Resource\Icons\txt.png" />
+    <Resource Include="Resource\Icons\UK_flag.png" />
+    <Resource Include="Resource\Icons\xaml.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resource\Strings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resource\Strings.pl.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resource\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

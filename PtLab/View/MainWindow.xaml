@@ -1,0 +1,114 @@
+﻿<Window x:Class="PtLab.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PtLab" 
+        xmlns:viewmodels="clr-namespace:PtLab.ViewModel" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:FileExplorer}"
+        mc:Ignorable="d"
+        Title="Morphine"
+        Height="450" Width="800" MinHeight="300" MinWidth="600">
+    
+    <Window.Resources>
+        <ContextMenu x:Key="FileContextMenu">
+            <MenuItem x:Name="OpenFileMenuItem"
+                      Header="{Binding Source={StaticResource Strings}, Path=Open}"
+                      Command="{Binding OpenFileCommand}" CommandParameter="{Binding}"/>
+        </ContextMenu>
+        <local:LangBoolConverter x:Key="LangBoolConverter"/>
+        <DataTemplate DataType="{x:Type viewmodels:FileInfoViewModel}">
+            <StackPanel Orientation="Horizontal" ContextMenu="{StaticResource FileContextMenu}">
+                <Image Width="16" Source="{Binding ImageSource}" />
+                <TextBlock Margin="10,0,0,0" Text="{Binding Caption}"/>
+            </StackPanel>
+        </DataTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type viewmodels:DirectoryInfoViewModel}" ItemsSource="{Binding Items}">
+            <StackPanel Orientation="Horizontal">
+                <Image Width="16" Source="pack://application:,,,/Resource/Icons/folder.png" />
+                <TextBlock Margin="10,0,0,0" Text="{Binding Caption}" FontWeight="Bold" />
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <Style x:Key="LangButtonStyle" TargetType="ToggleButton">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="BorderBrush" Value="Blue" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type TreeViewItem}">
+            <Setter Property="IsExpanded" Value="False"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+
+        <Menu Grid.Row="0" Grid.ColumnSpan="2">
+            <MenuItem Header="{Binding Source={StaticResource Strings}, Path=File}">
+                <MenuItem Header="{Binding Source={StaticResource Strings}, Path=Open}" 
+                          Command="{Binding OpenRootFolderCommand}" />
+                <MenuItem Header="{Binding Source={StaticResource Strings}, Path=Sort}"
+                          Command="{Binding SortRootCommand}" />
+                <Separator />
+                <MenuItem Header="{Binding Source={StaticResource Strings}, Path=Exit}" Click="OnMenuExit_Click" />
+            </MenuItem>
+        </Menu>
+
+        <ToolBarPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" >
+            <ToggleButton x:Name="PolishLangugageButton"
+                          Style="{StaticResource LangButtonStyle}"
+                          IsChecked="{Binding Lang, Converter={StaticResource LangBoolConverter}, ConverterParameter=pl}"
+                          ToolTip="{Binding Source={StaticResource Strings}, Path=Lang_pl}">
+                <Image Source="pack://application:,,,/Resource/Icons/PL_flag.png" Width="16" />
+            </ToggleButton>
+            <ToggleButton x:Name="EnglishLangugageButton"
+                          Style="{StaticResource LangButtonStyle}"
+                          IsChecked="{Binding Lang, Converter={StaticResource LangBoolConverter}, ConverterParameter=en}"
+                          ToolTip="{Binding Source={StaticResource Strings}, Path=Lang_en}">
+                <Image Source="pack://application:,,,/Resource/Icons/UK_flag.png" Width="16" />
+            </ToggleButton>
+            <ToggleButton x:Name="GermanLangugageButton"
+                          Style="{StaticResource LangButtonStyle}"
+                          IsChecked="{Binding Lang, Converter={StaticResource LangBoolConverter}, ConverterParameter=de}"
+                          ToolTip="{Binding Source={StaticResource Strings}, Path=Lang_de}">
+                <Image Source="pack://application:,,,/Resource/Icons/DE_flag.png" Width="16" />
+            </ToggleButton>
+        </ToolBarPanel>
+
+        <TreeView Grid.Row="1" Name="treeViewControl" ItemsSource="{ Binding Root.Items}" />
+
+        <ScrollViewer Grid.Column="1" Grid.Row="1">
+            <TextBox Name="textBoxControl"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     Text="{Binding Text, Mode=OneWay}"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap">
+                <!--
+                <TextBox.InputBindings>
+                    <MouseBinding MouseAction="LeftDoubleClick"
+                    Command="{Binding OnMenuItemOpenClick}"
+                    CommandParameter="{Binding}" />
+                </TextBox.InputBindings>
+                -->
+            </TextBox>
+        </ScrollViewer>
+        
+        <StatusBar Grid.Row="2" Grid.ColumnSpan="2" >
+            <TextBlock Name="txtStatusBar" Text="----"/>
+            <TextBlock  Name="txtStatusMessage" Text="{Binding StatusMessage}"></TextBlock>
+        </StatusBar>
+    </Grid>
+</Window>
